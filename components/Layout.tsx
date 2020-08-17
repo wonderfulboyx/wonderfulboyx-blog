@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import {Container} from "@theme-ui/components";
 
-export const siteTitle = 'Next.js Sample Website'
+export const siteTitle = 'wonderfulboyxのblog'
 
 const Layout: React.FC = ({children}) => {
   return (
