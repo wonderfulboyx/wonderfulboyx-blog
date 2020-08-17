@@ -12,10 +12,6 @@ const Layout: React.FC = ({children}) => {
         <title>{siteTitle}</title>
         <link rel="icon" href="/favicon.ico"/>
         <meta
-          name="description"
-          content="wonderfulboyxのblog"
-        />
-        <meta
           property="og:image"
           content={`https://og-image.now.sh/${encodeURI(
             siteTitle
