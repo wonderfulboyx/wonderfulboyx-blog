@@ -27,20 +27,34 @@ const getFromSlug = async (slug: string): Promise<IArticle> => {
 }
 
 const getFromFileName = async (fileName: string): Promise<IArticle> => {
-  const mod = await import(`../../contents/articles/${fileName}`)
-  if (typeof mod !== 'object' || mod === null) {
-    throw new Error('module undefined')
-  }
-  if (!mod.metaData) {
-    throw new Error('metaData undefined')
+  const {metaData} = await import(`../../contents/articles/${fileName}`)
+  if (!isValidMetaData(metaData)) {
+    throw new Error('invalid metaData')
   }
   return {
     fileName,
     slug: slugFromFileName(fileName),
-    title: mod.metaData.title,
-    date: mod.metaData.date,
-    metaData: mod.metaData,
+    title: metaData.title,
+    date: metaData.date,
+    metaData: metaData,
   }
+}
+
+const requiredMetaDataKey = ['title', 'date'] as const
+type MetaData =
+  { [key in typeof requiredMetaDataKey[number]]: string } &
+  Record<string, string>
+const isValidMetaData = (metaData: any): metaData is MetaData => {
+  if (typeof metaData !== 'object' || metaData === null) {
+    throw new Error('metaData is not object')
+  }
+  if (!requiredMetaDataKey.every(requiredKey => requiredKey in metaData)) {
+    throw new Error('metaData must contain requiredKey')
+  }
+  if (!Object.values(metaData).every(value => typeof value === 'string')) {
+    throw new Error('metaData value must be string')
+  }
+  return true
 }
 
 
