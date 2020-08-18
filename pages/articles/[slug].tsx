@@ -9,7 +9,7 @@ import CodeBlock from '../../components/CodeBlock'
 import Date from '../../components/Date'
 import Layout from '../../components/Layout'
 import {IArticle} from "../../model/Article";
-import ArticleRepository from "../../lib/repository/ArticleRepository";
+import * as ArticleRepository from "../../lib/repository/ArticleRepository";
 
 interface Props {
   article: IArticle
@@ -20,19 +20,17 @@ const components = {
 }
 
 const Post: React.FC<Props> = ({article}) => {
-  const {title, fileName, date} = article
+  const {title, fileName, date, metaData} = article
   const MDXContent = dynamic(() => import(`../../contents/articles/${fileName}`))
 
   return (
     <Layout>
       <Head>
         <title>{title}</title>
-        <meta
+        {metaData.ogImage && <meta
           property="og:image"
-          content={`https://og-image.now.sh/${encodeURI(
-            title
-          )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
-        />
+          content={metaData.ogImage}
+        />}
         <meta name="og:title" content={title}/>
         <meta name="twitter:card" content="summary_large_image"/>
       </Head>

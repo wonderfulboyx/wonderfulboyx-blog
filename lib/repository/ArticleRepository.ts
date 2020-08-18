@@ -4,15 +4,7 @@ import {IArticle, MetaData, requiredMetaDataKey} from "../../model/Article";
 
 const articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
 
-const fileNameFromSlug = (slug: string): string => {
-  return `${slug}.mdx`
-}
-
-const slugFromFileName = (fileName: string): string => {
-  return fileName.replace(/\.(mdx)$/, '')
-}
-
-const getAll = async (): Promise<IArticle[]> => {
+export const getAll = async (): Promise<IArticle[]> => {
   const fileNames = fs.readdirSync(articlesDirectory)
   const allArticlesData = await Promise.all(
     fileNames.map(getFromFileName)
@@ -20,13 +12,13 @@ const getAll = async (): Promise<IArticle[]> => {
   return allArticlesData
 }
 
-const getFromSlug = async (slug: string): Promise<IArticle> => {
+export const getFromSlug = async (slug: string): Promise<IArticle> => {
   const fileName = await fileNameFromSlug(slug)
   const article = await getFromFileName(fileName)
   return article
 }
 
-const getFromFileName = async (fileName: string): Promise<IArticle> => {
+export const getFromFileName = async (fileName: string): Promise<IArticle> => {
   const {metaData} = await import(`../../contents/articles/${fileName}`)
   if (!isValidMetaData(metaData)) {
     throw new Error('invalid metaData')
@@ -62,12 +54,10 @@ const isValidMetaData = (metaData: any): metaData is MetaData => {
   return true
 }
 
-
-const ArticleRepository = {
-  getAll,
-  getFromSlug,
-  getFromFileName
+const fileNameFromSlug = (slug: string): string => {
+  return `${slug}.mdx`
 }
 
-export default ArticleRepository
-
+const slugFromFileName = (fileName: string): string => {
+  return fileName.replace(/\.(mdx)$/, '')
+}

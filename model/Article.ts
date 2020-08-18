@@ -9,14 +9,11 @@ export interface IArticle {
 }
 
 export const requiredMetaDataKey = ['title', 'date'] as const
+
 export type MetaData =
   { [key in typeof requiredMetaDataKey[number]]: string } &
   { ogImage?: string, tags?: string[] }
 
-const Article = {
-  compareDesc: (left: IArticle, right: IArticle): number => {
-    return dateCompareDesc(parseISO(left.date), parseISO(right.date))
-  }
+export const compareDesc = (left: IArticle, right: IArticle): number => {
+  return dateCompareDesc(parseISO(left.date), parseISO(right.date))
 }
-
-export default Article

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {jsx, Styled} from 'theme-ui'
+import {jsx} from 'theme-ui'
 import React from "react";
 import Link from "next/link";
 import {format, parseISO} from "date-fns";
@@ -24,7 +24,7 @@ const ArticleList: React.FC<Props> = ({articleList}) => {
                 transition: variables.transitions.hoverBlock,
               }
             }}>
-          <Link href="/articles/[id]" as={`/articles/${slug}`}><a>
+          <Link href="/articles/[slug]" as={`/articles/${slug}`}><a>
             <div>
               <h2 sx={{
                 color: 'primary',

@@ -23,7 +23,7 @@ const getPrismLanguage: (className: string | undefined) => PrismLanguage | '' =
 
     const lang = className.replace(/language-/, '')
     if (!isPrismLanguage(lang)) {
-      console.warn(`className ${className} is not supported language. automatically specified markdown`)
+      console.warn(`className ${className} is not supported language.`)
       return defaultLanguage
     }
 
