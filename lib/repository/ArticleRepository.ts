@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {IArticle} from "../../model/Article";
+import {IArticle, MetaData, requiredMetaDataKey} from "../../model/Article";
 
 const articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
 
@@ -40,10 +40,6 @@ const getFromFileName = async (fileName: string): Promise<IArticle> => {
   }
 }
 
-const requiredMetaDataKey = ['title', 'date'] as const
-type MetaData =
-  { [key in typeof requiredMetaDataKey[number]]: string } &
-  Record<string, string>
 const isValidMetaData = (metaData: any): metaData is MetaData => {
   if (typeof metaData !== 'object' || metaData === null) {
     throw new Error('metaData is not object')
@@ -51,8 +47,17 @@ const isValidMetaData = (metaData: any): metaData is MetaData => {
   if (!requiredMetaDataKey.every(requiredKey => requiredKey in metaData)) {
     throw new Error('metaData must contain requiredKey')
   }
-  if (!Object.values(metaData).every(value => typeof value === 'string')) {
-    throw new Error('metaData value must be string')
+  const isValueTypeValid = Object.entries(metaData).every(([key, value]) => {
+    if (key !== 'tags') {
+      return typeof value === 'string'
+    }
+    if (key === 'tags' && Array.isArray(value)) {
+      return value.every(elm => typeof elm === 'string')
+    }
+    return false
+  })
+  if (!isValueTypeValid) {
+    throw new Error('invalid metaData')
   }
   return true
 }

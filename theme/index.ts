@@ -13,7 +13,7 @@ const theme = {
     light: '#666',
     background: '#fff',
     primary: '#222',
-    secondary: '#609',
+    blockBg: '#ddd',
     headerBg: '#222',
     headerText: '#fff',
     hoverBlock: '#eee',
@@ -68,7 +68,59 @@ const theme = {
       padding: '.5rem 0',
     },
     pre: {
+      fontSize: 2,
+      fontFamily: 'monospace',
+      code: {
+        color: 'inherit'
+      }
+    },
+    blockquote: {
+      padding: 3,
+      color: 'primary',
+      margin: '.5rem 0',
+      fontStyle: 'italic',
+      backgroundColor: 'blockBg'
+    },
+    h4: {
+      color: 'text',
+      fontFamily: 'heading',
+      lineHeight: 'heading',
+      fontWeight: 'heading',
       fontSize: 2
+    },
+    h5: {
+      color: 'text',
+      fontFamily: 'heading',
+      lineHeight: 'heading',
+      fontWeight: 'heading',
+      fontSize: 1
+    },
+    h6: {
+      color: 'text',
+      fontFamily: 'heading',
+      lineHeight: 'heading',
+      fontWeight: 'heading',
+      fontSize: 0
+    },
+    code: {
+      fontFamily: 'monospace',
+      fontSize: 'inherit'
+    },
+    table: {
+      width: '100%',
+      borderCollapse: 'separate',
+      borderSpacing: 0
+    },
+    th: {
+      textAlign: 'left',
+      borderBottomStyle: 'solid'
+    },
+    td: {
+      textAlign: 'left',
+      borderBottomStyle: 'solid'
+    },
+    img: {
+      maxWidth: '100%'
     }
   },
   sizes: {

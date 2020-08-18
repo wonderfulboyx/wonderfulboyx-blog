@@ -1,5 +1,5 @@
 import { mdx } from '@mdx-js/react'
-import PrismCodeBlock, { defaultProps, Language as PrismLanguage, Prism } from 'prism-react-renderer'
+import PrismCodeBlock, {defaultProps, Language, Language as PrismLanguage, Prism} from 'prism-react-renderer'
 import React, { ReactNode } from 'react'
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
 import styled from "@emotion/styled";
@@ -13,9 +13,9 @@ interface Props {
 const isPrismLanguage: (str: string) => str is PrismLanguage =
   (str): str is PrismLanguage => Object.keys(Prism.languages).includes(str)
 
-const getPrismLanguage: (className: string | undefined) => PrismLanguage =
+const getPrismLanguage: (className: string | undefined) => PrismLanguage | '' =
   (className) => {
-    const defaultLanguage = 'markdown'
+    const defaultLanguage = ''
 
     if (!className) {
       return defaultLanguage
@@ -69,9 +69,9 @@ const CodeBlock: React.FC<Props> =
     }
 
     return (
-      <PrismCodeBlock theme={defaultProps.theme} Prism={defaultProps.Prism} code={code?.trim() ?? ''} language={prismLanguage}>
+      <PrismCodeBlock theme={defaultProps.theme} Prism={defaultProps.Prism} code={code?.trim() ?? ''} language={prismLanguage as Language}>
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={{ ...style, padding: '20px' }}>
+          <pre className={className} style={{ ...style, padding: '20px', overflow: 'auto' }}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line, key: i })}>
                 {line.map((token, key) => (

@@ -5,8 +5,13 @@ export interface IArticle {
   fileName: string
   title: string
   date: string
-  metaData: Record<string, string>
+  metaData: MetaData
 }
+
+export const requiredMetaDataKey = ['title', 'date'] as const
+export type MetaData =
+  { [key in typeof requiredMetaDataKey[number]]: string } &
+  { ogImage?: string, tags?: string[] }
 
 const Article = {
   compareDesc: (left: IArticle, right: IArticle): number => {

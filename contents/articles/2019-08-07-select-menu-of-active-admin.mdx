@@ -1,0 +1,95 @@
+export const metaData = {
+    title: "【Rails】ActiveAdminでselectメニューのラベルを変更する+公式ドキュメントに当たる",
+    date: "2019-08-07",
+}
+
+## selectメニューの書き方
+
+ActiveAdminでselectメニューを作りたいときは以下のように書く
+
+```ruby
+form do |f|
+  f.inputs do
+    f.input :some_value, as: :select, collection: ['one', 'two', 'three']
+  end
+end
+```
+
+## selectメニューのラベルを変更する
+
+上記の場合画面上で選択した値がモデルにそのままセットされる。
+しかし、画面上で選んだ値とは違う値をモデルにセットしたいという場合ががある。
+たとえば、画面ではわかりやすいラベルで選択してもらって、モデルには区分値を設定したい場合などだ。
+
+値とラベルを分けたいときは以下のようにハッシュで渡してやればいい
+
+```ruby
+form do |f|
+  f.inputs do
+    f.input :some_value, as: :select, collection: { one: 1, two: 2, three: 3 }
+  end
+end
+```
+
+keyがラベルに、valueがセットされる値になる。
+
+これで画面上は 'one', 'two', 'three' のなかから一つを選択することになるが、モデルにセットされる値は 1, 2, 3のいずれかになる。
+
+## 公式のドキュメントから根拠をさがす。
+
+上記の方法はQiitaでいろいろ調べれば出てくるが([例](https://qiita.com/murata0705/items/6dccb5467233816808f7))、[公式のドキュメント](https://activeadmin.info/https://activeadmin.info/documentation.html)を読んで調べようと思っても意外に見つからない。
+
+私の調べ方が悪いだけかもしれないが、このままだとActiveAdminのフォーム関連での困りごとを調べられないので、公式の情報の在り処を突き止めておく。
+
+## ActiveAdminの依存関係
+
+リポジトリを見に行くと、ActiveAdminはその機能をいくつかのOSSに依存している([参照](https://github.com/activeadmin/activeadmin#dependencies))。
+
+なかでも今回問題になったフォーム関連の機能は[Formtastic](https://github.com/justinfrench/formtastic)に依存している。
+
+## Formtasticのselect機能
+
+FormtasticのREADMEに使用例が列挙されていて、collection関連のコードだけでもズラッと以下のように書かれている
+
+> Many inputs provide a collection of options to choose from (like `:select`, `:radio`, `:check_boxes`, `:boolean`). In many cases, Formtastic can find choices through the model associations, but if you want to use your own set of choices, the `:collection` option is what you want.  You can pass in an Array of objects, an array of Strings, a Hash... Throw almost anything at it!
+
+```ruby
+  f.input :authors, :as => :check_boxes, :collection => User.order("last_name ASC").all
+  f.input :authors, :as => :check_boxes, :collection => current_user.company.users.active
+  f.input :authors, :as => :check_boxes, :collection => [@justin, @kate]
+  f.input :authors, :as => :check_boxes, :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+  f.input :author,  :as => :select,      :collection => Author.all
+  f.input :author,  :as => :select,      :collection => Author.pluck(:first_name, :id)
+  f.input :author,  :as => :select,      :collection => Author.pluck(Arel.sql("CONCAT(`first_name`, ' ', `last_name`)"), :id)
+  f.input :author,  :as => :select,      :collection => Author.your_custom_scope_or_class_method
+  f.input :author,  :as => :select,      :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
+  f.input :author,  :as => :select,      :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+  f.input :author,  :as => :radio,       :collection => User.all
+  f.input :author,  :as => :radio,       :collection => [@justin, @kate]
+  f.input :author,  :as => :radio,       :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
+  f.input :author,  :as => :radio,       :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+  f.input :admin,   :as => :radio,       :collection => ["Yes!", "No"]
+  f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
+  f.input :fav_book,:as => :datalist   , :collection => Book.pluck(:name)
+```
+
+*Throw almost anything at it!* と言っているようにほとんどなんでも渡せるようだ。
+
+今回のQiitaで調べたケースだとハッシュを渡しているから、ドキュメント上では
+```ruby
+ f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
+```
+が根拠になるだろうか。書いてみて動いている以上の根拠はないのだが。
+
+また、これ以上の意味はあまりないがソースコード中のドキュメントでも直接ハッシュを渡している例を見つけた。
+
+```ruby
+  <%= f.input :status,     :collection => {"Draft" => 0, "Published" => 1} %>
+```
+
+https://github.com/justinfrench/formtastic/blob/master/lib/formtastic/helpers/input_helper.rb#L187
+
+
+これだけ読んでcollectionにHashを渡せばラベルを変更できるんだなと思える気はしないが、列挙されているcollectionの渡し方に目を通しておいて損はないとおもう。
+
+<div> </div>

@@ -16,7 +16,7 @@ interface Props {
 }
 
 const components = {
-  code: CodeBlock
+  code: CodeBlock,
 }
 
 const Post: React.FC<Props> = ({article}) => {
