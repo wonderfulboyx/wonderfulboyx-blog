@@ -9,7 +9,7 @@ import CodeBlock from '../../components/CodeBlock'
 import Date from '../../components/Date'
 import Layout from '../../components/Layout'
 import {IArticle} from "../../model/Article";
-import ArticleRepository from "../../lib/repository/ArticleRepository";
+import * as ArticleRepository from "../../lib/repository/ArticleRepository";
 
 interface Props {
   article: IArticle
