@@ -1,5 +1,5 @@
 export const metaData = {
-    title: "Next.jsでブログを作った",
+    title: "Next+MDX+Typescript+Vercelでブログを作った",
     date: "2020-08-17",
     ogImage: "https://og-image.now.sh/.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg&images=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fremojansen%2Flogo.ts%40master%2Fts.svg"
 }
@@ -46,6 +46,11 @@ MarkdownにReactコンポーネントが埋め込めて、importするとReact�
 ### Typescript
 
 型があると仕様を調べるコストをだいぶ減らすことができる。型自身がある程度ドキュメントとなるので、コードジャンプするだけでドキュメントにアクセスできるようになるからだ。補完が効くのでついでにタイピングの量とタイポなどのポカミスも減らせる。たんに型システムが好きというのもある。
+
+### Vercel
+
+ホスティングするだけならNetlifyでもよかったが、Nextの開発元zeitのホスティングサービスVercelを使うと各種最適化が行われる( [Optimized for Next.js](https://nextjs.org/docs/deployment#optimized-for-nextjs) ) ようなので、Vercelを使うことにした。便利で、Netlifyと比べてもとくに不自由はない。
+
 
 ## その他
 

@@ -8,10 +8,6 @@ export interface IArticle {
   metaData: Record<string, string>
 }
 
-const Article = {
-  compareDesc: (left: IArticle, right: IArticle): number => {
-    return dateCompareDesc(parseISO(left.date), parseISO(right.date))
-  }
+export const compareDesc = (left: IArticle, right: IArticle): number => {
+  return dateCompareDesc(parseISO(left.date), parseISO(right.date))
 }
-
-export default Article
