@@ -7,7 +7,8 @@ import React from "react"
 import Layout, { siteTitle } from '../components/Layout'
 import ArticleList from "../components/ArticleList";
 import * as ArticleRepository from "../lib/repository/ArticleRepository";
-import Article, {IArticle} from "../model/Article";
+import * as Article from "../model/Article";
+import {IArticle} from "../model/Article";
 
 interface Props {
   allArticlesSorted: IArticle[]
