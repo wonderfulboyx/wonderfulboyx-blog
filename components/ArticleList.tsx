@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {jsx, Styled} from 'theme-ui'
+import {jsx} from 'theme-ui'
 import React from "react";
 import Link from "next/link";
 import {format, parseISO} from "date-fns";
