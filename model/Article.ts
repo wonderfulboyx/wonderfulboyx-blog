@@ -1,19 +1,35 @@
 import {compareDesc as dateCompareDesc, parseISO} from "date-fns";
+import {ArticleMetaData} from "./ArticleMetaData";
 
 export interface IArticle {
   slug: string
   fileName: string
   title: string
   date: string
-  metaData: MetaData
+  metaData: ArticleMetaData
 }
 
-export const requiredMetaDataKey = ['title', 'date'] as const
+export class Article implements IArticle {
+  public static readonly compareDesc = (left: IArticle, right: IArticle): number => {
+    return dateCompareDesc(parseISO(left.date), parseISO(right.date))
+  }
 
-export type MetaData =
-  { [key in typeof requiredMetaDataKey[number]]: string } &
-  { ogImage?: string, tags?: string[] }
+  public static readonly fromInterface = (obj: IArticle): Article => {
+    return new Article(
+      obj.slug,
+      obj.fileName,
+      obj.title,
+      obj.date,
+      obj.metaData
+    )
+  }
 
-export const compareDesc = (left: IArticle, right: IArticle): number => {
-  return dateCompareDesc(parseISO(left.date), parseISO(right.date))
+  private constructor(
+    public readonly slug: string,
+    public readonly fileName: string,
+    public readonly title: string,
+    public readonly date: string,
+    public readonly metaData: ArticleMetaData,
+  ) {}
 }
+

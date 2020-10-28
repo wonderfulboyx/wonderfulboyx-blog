@@ -1,63 +1,74 @@
 import fs from 'fs';
 import path from 'path';
-import {IArticle, MetaData, requiredMetaDataKey} from "../../model/Article";
+import {Article} from "../../model/Article";
+import {ArticleMetaData, articleMetaDataRequiredKey} from '../../model/ArticleMetaData'
 
-const articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
-
-export const getAll = async (): Promise<IArticle[]> => {
-  const fileNames = fs.readdirSync(articlesDirectory)
-  const allArticlesData = await Promise.all(
-    fileNames.map(getArticleFromFileName)
-  )
-  return allArticlesData
+export interface IArticleRepository {
+  getAll: () => Promise<Article[]>
+  getFromSlug: (slug: string) =>  Promise<Article>
+  getFromFileName: (fileName: string) =>  Promise<Article>
 }
 
-export const getFromSlug = async (slug: string): Promise<IArticle> => {
-  const fileName = await fileNameFromSlug(slug)
-  const article = await getArticleFromFileName(fileName)
-  return article
-}
+export class ArticleRepository implements IArticleRepository {
+  private static readonly articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
 
-export const getArticleFromFileName = async (fileName: string): Promise<IArticle> => {
-  const {metaData} = await import(`../../contents/articles/${fileName}`)
-  if (!isValidMetaData(metaData)) {
-    throw new Error('invalid metaData')
+  public async getAll(): Promise<Article[]> {
+    const fileNames = fs.readdirSync(ArticleRepository.articlesDirectory)
+    const allArticlesData = await Promise.all(
+      fileNames.map(this.getFromFileName)
+    )
+    return allArticlesData
   }
-  return {
-    fileName,
-    slug: slugFromFileName(fileName),
-    title: metaData.title,
-    date: metaData.date,
-    metaData: metaData,
-  }
-}
 
-const isValidMetaData = (metaData: any): metaData is MetaData => {
-  if (typeof metaData !== 'object' || metaData === null) {
-    throw new Error('metaData is not object')
+  public async getFromSlug(slug: string): Promise<Article> {
+    const fileName = await this.fileNameFromSlug(slug)
+    const article = await this.getFromFileName(fileName)
+    return article
   }
-  if (!requiredMetaDataKey.every(requiredKey => requiredKey in metaData)) {
-    throw new Error('metaData must contain requiredKey')
-  }
-  const isValueTypeValid = Object.entries(metaData).every(([key, value]) => {
-    if (key !== 'tags') {
-      return typeof value === 'string'
+
+  public async getFromFileName(fileName: string): Promise<Article> {
+    const {metaData} = await import(`../../contents/articles/${fileName}`)
+    if (!this.isValidMetaData(metaData)) {
+      throw new Error('invalid metaData')
     }
-    if (key === 'tags' && Array.isArray(value)) {
-      return value.every(elm => typeof elm === 'string')
-    }
-    return false
-  })
-  if (!isValueTypeValid) {
-    throw new Error('invalid metaData')
+    return Article.fromInterface({
+      fileName,
+      slug: this.slugFromFileName(fileName),
+      title: metaData.title,
+      date: metaData.date,
+      metaData: metaData,
+    })
   }
-  return true
+
+  private isValidMetaData(metaData: unknown): metaData is ArticleMetaData {
+    if (typeof metaData !== 'object' || metaData === null) {
+      throw new Error('metaData is not object')
+    }
+    if (!articleMetaDataRequiredKey.every(requiredKey => requiredKey in metaData)) {
+      throw new Error('metaData must contain requiredKey')
+    }
+    const isValueTypeValid = Object.entries(metaData).every(([key, value]) => {
+      if (key !== 'tags') {
+        return typeof value === 'string'
+      }
+      if (key === 'tags' && Array.isArray(value)) {
+        return value.every(elm => typeof elm === 'string')
+      }
+      return false
+    })
+    if (!isValueTypeValid) {
+      throw new Error('invalid metaData')
+    }
+    return true
+  }
+
+  private fileNameFromSlug = (slug: string): string => {
+    return `${slug}.mdx`
+  }
+
+  private slugFromFileName = (fileName: string): string => {
+    return fileName.replace(/\.(mdx)$/, '')
+  }
 }
 
-const fileNameFromSlug = (slug: string): string => {
-  return `${slug}.mdx`
-}
 
-const slugFromFileName = (fileName: string): string => {
-  return fileName.replace(/\.(mdx)$/, '')
-}

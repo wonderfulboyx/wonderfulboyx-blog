@@ -8,11 +8,11 @@ import {jsx, Styled} from 'theme-ui'
 import CodeBlock from '../../components/CodeBlock'
 import Date from '../../components/Date'
 import Layout from '../../components/Layout'
-import {IArticle} from "../../model/Article";
-import * as ArticleRepository from "../../lib/repository/ArticleRepository";
+import {ArticleRepository} from '../../lib/repository/ArticleRepository'
+import {Article} from '../../model/Article'
 
 interface Props {
-  article: IArticle
+  article: Article
 }
 
 const components = {
@@ -54,8 +54,10 @@ export default Post
 // ==== Next.js API ====
 type UrlQuery = { slug: string }
 
+const articleRepository = new ArticleRepository()
+
 export const getStaticPaths: GetStaticPaths<UrlQuery> = async () => {
-  const articles = await ArticleRepository.getAll()
+  const articles = await articleRepository.getAll()
   const paths = articles.map(article => {
     return {
       params: {slug: article.slug}
@@ -72,7 +74,7 @@ export const getStaticProps: GetStaticProps<Props, UrlQuery> =
     if (!params) {
       throw new Error('staticProps undefined')
     }
-    const article = await ArticleRepository.getFromSlug(params.slug)
+    const article = await articleRepository.getFromSlug(params.slug)
     return {
       props: {
         article
