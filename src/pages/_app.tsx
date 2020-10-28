@@ -4,7 +4,7 @@ import { ThemeProvider } from 'theme-ui';
 import theme from '../theme';
 import '../styles/destyle.css'
 import {Router} from "next/router";
-import * as gatag from '../lib/gtag'
+import * as gatag from '../plugin/gtag'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {

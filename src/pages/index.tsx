@@ -6,11 +6,11 @@ import Head from 'next/head'
 import React from "react"
 import Layout, { siteTitle } from '../components/Layout'
 import ArticleList from "../components/ArticleList";
-import {ArticleRepository} from '../lib/repository/ArticleRepository'
-import {Article} from '../model/Article'
+import {ArticleRepository} from '../repository/ArticleRepository'
+import Article, {IArticle} from '../model/Article'
 
 interface Props {
-  allArticlesSorted: Article[]
+  allArticlesSorted: IArticle[]
 }
 
 const Home: React.FC<Props> = ({ allArticlesSorted }) => {

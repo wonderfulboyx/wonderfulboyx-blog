@@ -8,11 +8,11 @@ import {jsx, Styled} from 'theme-ui'
 import CodeBlock from '../../components/CodeBlock'
 import Date from '../../components/Date'
 import Layout from '../../components/Layout'
-import {ArticleRepository} from '../../lib/repository/ArticleRepository'
-import {Article} from '../../model/Article'
+import {ArticleRepository} from '../../repository/ArticleRepository'
+import {IArticle} from '../../model/Article'
 
 interface Props {
-  article: Article
+  article: IArticle
 }
 
 const components = {
@@ -21,7 +21,7 @@ const components = {
 
 const Post: React.FC<Props> = ({article}) => {
   const {title, fileName, date, metaData} = article
-  const MDXContent = dynamic(() => import(`../../contents/articles/${fileName}`))
+  const MDXContent = dynamic(() => import(`../../../contents/articles/${fileName}`))
 
   return (
     <Layout>

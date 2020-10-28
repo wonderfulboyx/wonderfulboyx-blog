@@ -1,18 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import {Article} from "../../model/Article";
-import {ArticleMetaData, articleMetaDataRequiredKey} from '../../model/ArticleMetaData'
+import {ArticleMetaData, articleMetaDataRequiredKey} from '../model/ArticleMetaData'
+import {IArticle} from '../model/Article'
 
 export interface IArticleRepository {
-  getAll: () => Promise<Article[]>
-  getFromSlug: (slug: string) =>  Promise<Article>
-  getFromFileName: (fileName: string) =>  Promise<Article>
+  getAll: () => Promise<IArticle[]>
+  getFromSlug: (slug: string) =>  Promise<IArticle>
+  getFromFileName: (fileName: string) =>  Promise<IArticle>
 }
 
 export class ArticleRepository implements IArticleRepository {
   private static readonly articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
 
-  public async getAll(): Promise<Article[]> {
+  public async getAll(): Promise<IArticle[]> {
     const fileNames = fs.readdirSync(ArticleRepository.articlesDirectory)
     const allArticlesData = await Promise.all(
       fileNames.map(this.getFromFileName)
@@ -20,27 +20,27 @@ export class ArticleRepository implements IArticleRepository {
     return allArticlesData
   }
 
-  public async getFromSlug(slug: string): Promise<Article> {
-    const fileName = await this.fileNameFromSlug(slug)
+  public async getFromSlug(slug: string): Promise<IArticle> {
+    const fileName = await ArticleRepository.fileNameFromSlug(slug)
     const article = await this.getFromFileName(fileName)
     return article
   }
 
-  public async getFromFileName(fileName: string): Promise<Article> {
+  public async getFromFileName(fileName: string): Promise<IArticle> {
     const {metaData} = await import(`../../contents/articles/${fileName}`)
-    if (!this.isValidMetaData(metaData)) {
+    if (!ArticleRepository.isValidMetaData(metaData)) {
       throw new Error('invalid metaData')
     }
-    return Article.fromInterface({
+    return {
       fileName,
-      slug: this.slugFromFileName(fileName),
+      slug: ArticleRepository.slugFromFileName(fileName),
       title: metaData.title,
       date: metaData.date,
       metaData: metaData,
-    })
+    }
   }
 
-  private isValidMetaData(metaData: unknown): metaData is ArticleMetaData {
+  private static isValidMetaData = (metaData: unknown): metaData is ArticleMetaData => {
     if (typeof metaData !== 'object' || metaData === null) {
       throw new Error('metaData is not object')
     }
@@ -62,11 +62,11 @@ export class ArticleRepository implements IArticleRepository {
     return true
   }
 
-  private fileNameFromSlug = (slug: string): string => {
+  private static fileNameFromSlug = (slug: string): string => {
     return `${slug}.mdx`
   }
 
-  private slugFromFileName = (fileName: string): string => {
+  private static slugFromFileName = (fileName: string): string => {
     return fileName.replace(/\.(mdx)$/, '')
   }
 }
