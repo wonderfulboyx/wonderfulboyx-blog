@@ -7,18 +7,18 @@ const articlesDirectory = path.join(process.cwd(), 'contents', 'articles')
 export const getAll = async (): Promise<IArticle[]> => {
   const fileNames = fs.readdirSync(articlesDirectory)
   const allArticlesData = await Promise.all(
-    fileNames.map(getFromFileName)
+    fileNames.map(getArticleFromFileName)
   )
   return allArticlesData
 }
 
 export const getFromSlug = async (slug: string): Promise<IArticle> => {
   const fileName = await fileNameFromSlug(slug)
-  const article = await getFromFileName(fileName)
+  const article = await getArticleFromFileName(fileName)
   return article
 }
 
-export const getFromFileName = async (fileName: string): Promise<IArticle> => {
+export const getArticleFromFileName = async (fileName: string): Promise<IArticle> => {
   const {metaData} = await import(`../../contents/articles/${fileName}`)
   if (!isValidMetaData(metaData)) {
     throw new Error('invalid metaData')
