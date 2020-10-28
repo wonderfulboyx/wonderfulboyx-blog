@@ -5,6 +5,7 @@ import theme from '../theme';
 import '../styles/destyle.css'
 import {Router} from "next/router";
 import * as gatag from '../plugin/gtag'
+import {NextRouterHandler} from '../types/NextRouterHandler'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -12,7 +13,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       return
     }
 
-    const handleRouteChange = (path: any) => {
+    const handleRouteChange: NextRouterHandler = path => {
       gatag.pageview(path)
     }
 
