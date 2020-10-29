@@ -1,6 +1,5 @@
 import {mdx} from '@mdx-js/react'
 import PrismCodeBlock, {defaultProps, CustomLanguage, Language} from 'prism-react-renderer'
-import Prism from 'prismjs'
 import React, {ReactNode} from 'react'
 import {LiveEditor, LiveError, LivePreview, LiveProvider} from 'react-live'
 import styled from "@emotion/styled";
