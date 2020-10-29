@@ -1,4 +1,4 @@
-import {Language, Prism} from 'prism-react-renderer';
+import {Language, Prism, CustomLanguage} from 'prism-react-renderer';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -28,7 +28,7 @@ export const setPrismToGlobalWindow = (): void => {
   })
 }
 
-export const isPrismLanguage = (str: string): str is Language => {
+export const isCustomLanguage = (str: string): str is CustomLanguage => {
   const defaultLanguage = Object.keys(Prism.languages)
   return defaultLanguage.concat(additionalLanguage).includes(str)
 }

@@ -3,7 +3,7 @@ import PrismCodeBlock, {defaultProps, CustomLanguage, Language} from 'prism-reac
 import React, {ReactNode} from 'react'
 import {LiveEditor, LiveError, LivePreview, LiveProvider} from 'react-live'
 import styled from "@emotion/styled";
-import {isPrismLanguage} from '../plugin/prism'
+import {isCustomLanguage} from '../plugin/prism'
 
 interface Props {
   className?: string,
@@ -11,10 +11,10 @@ interface Props {
   render?: boolean,
 }
 
-const getPrismLanguage: (className: string) => CustomLanguage | '' =
+const getCustomLanguageFromClassName: (className: string) => CustomLanguage | '' =
   (className) => {
     const lang = className.replace(/language-/, '')
-    if (!isPrismLanguage(lang)) {
+    if (!isCustomLanguage(lang)) {
       console.warn(`className ${className} is not supported language.`)
       return ''
     }
@@ -27,7 +27,7 @@ const getCode: (node: ReactNode) => string =
 
 const CodeBlock: React.FC<Props> =
   ({children, className, live, render}) => {
-    const prismLanguage = getPrismLanguage(className || '')
+    const prismLanguage =  className ? getCustomLanguageFromClassName(className) : ''
     const code = getCode(children)
 
     if (live) {
@@ -66,7 +66,7 @@ const CodeBlock: React.FC<Props> =
         Prism={defaultProps.Prism}
         code={code?.trim() ?? ''}
         language={prismLanguage as Language/*
-          CustomLanguage ∈ Language なのでこのキャストには問題があるが、Prismを拡張したLanguageに対応させているので動く
+          Language ∈ CustomLanguage なのでこのキャストには問題があるが、Prismを拡張したLanguageに対応させているので動く
             ref: '../plugin/prism'
         */}
       >
