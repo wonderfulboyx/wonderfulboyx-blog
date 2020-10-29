@@ -54,37 +54,37 @@ FormtasticのREADMEに使用例が列挙されていて、collection関連のコ
 > Many inputs provide a collection of options to choose from (like `:select`, `:radio`, `:check_boxes`, `:boolean`). In many cases, Formtastic can find choices through the model associations, but if you want to use your own set of choices, the `:collection` option is what you want.  You can pass in an Array of objects, an array of Strings, a Hash... Throw almost anything at it!
 
 ```ruby
-  f.input :authors, :as => :check_boxes, :collection => User.order("last_name ASC").all
-  f.input :authors, :as => :check_boxes, :collection => current_user.company.users.active
-  f.input :authors, :as => :check_boxes, :collection => [@justin, @kate]
-  f.input :authors, :as => :check_boxes, :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
-  f.input :author,  :as => :select,      :collection => Author.all
-  f.input :author,  :as => :select,      :collection => Author.pluck(:first_name, :id)
-  f.input :author,  :as => :select,      :collection => Author.pluck(Arel.sql("CONCAT(`first_name`, ' ', `last_name`)"), :id)
-  f.input :author,  :as => :select,      :collection => Author.your_custom_scope_or_class_method
-  f.input :author,  :as => :select,      :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
-  f.input :author,  :as => :select,      :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
-  f.input :author,  :as => :radio,       :collection => User.all
-  f.input :author,  :as => :radio,       :collection => [@justin, @kate]
-  f.input :author,  :as => :radio,       :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
-  f.input :author,  :as => :radio,       :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
-  f.input :admin,   :as => :radio,       :collection => ["Yes!", "No"]
-  f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
-  f.input :fav_book,:as => :datalist   , :collection => Book.pluck(:name)
+f.input :authors, :as => :check_boxes, :collection => User.order("last_name ASC").all
+f.input :authors, :as => :check_boxes, :collection => current_user.company.users.active
+f.input :authors, :as => :check_boxes, :collection => [@justin, @kate]
+f.input :authors, :as => :check_boxes, :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+f.input :author,  :as => :select,      :collection => Author.all
+f.input :author,  :as => :select,      :collection => Author.pluck(:first_name, :id)
+f.input :author,  :as => :select,      :collection => Author.pluck(Arel.sql("CONCAT(`first_name`, ' ', `last_name`)"), :id)
+f.input :author,  :as => :select,      :collection => Author.your_custom_scope_or_class_method
+f.input :author,  :as => :select,      :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
+f.input :author,  :as => :select,      :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+f.input :author,  :as => :radio,       :collection => User.all
+f.input :author,  :as => :radio,       :collection => [@justin, @kate]
+f.input :author,  :as => :radio,       :collection => { @justin.name => @justin.id, @kate.name => @kate.id }
+f.input :author,  :as => :radio,       :collection => ["Justin", "Kate", "Amelia", "Gus", "Meg"]
+f.input :admin,   :as => :radio,       :collection => ["Yes!", "No"]
+f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
+f.input :fav_book,:as => :datalist   , :collection => Book.pluck(:name)
 ```
 
 *Throw almost anything at it!* と言っているようにほとんどなんでも渡せるようだ。
 
 今回のQiitaで調べたケースだとハッシュを渡しているから、ドキュメント上では
 ```ruby
- f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
+f.input :book_id, :as => :select,      :collection => Hash[Book.all.map{|b| [b.name,b.id]}]
 ```
 が根拠になるだろうか。書いてみて動いている以上の根拠はないのだが。
 
 また、これ以上の意味はあまりないがソースコード中のドキュメントでも直接ハッシュを渡している例を見つけた。
 
-```ruby
-  <%= f.input :status,     :collection => {"Draft" => 0, "Published" => 1} %>
+```erb
+<%= f.input :status,     :collection => {"Draft" => 0, "Published" => 1} %>
 ```
 
 https://github.com/justinfrench/formtastic/blob/master/lib/formtastic/helpers/input_helper.rb#L187

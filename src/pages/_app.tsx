@@ -6,6 +6,7 @@ import '../styles/destyle.css'
 import {Router} from "next/router";
 import * as gatag from '../plugin/gtag'
 import {NextRouterHandler} from '../types/NextRouterHandler'
+import {setPrismToGlobalWindow} from '../plugin/prism'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -22,6 +23,8 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       Router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [])
+
+  useEffect(setPrismToGlobalWindow, [])
 
   return (
     <ThemeProvider theme={theme}>

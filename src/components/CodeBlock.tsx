@@ -1,8 +1,10 @@
-import { mdx } from '@mdx-js/react'
-import PrismCodeBlock, {defaultProps, Language, Language as PrismLanguage, Prism} from 'prism-react-renderer'
-import React, { ReactNode } from 'react'
-import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live'
+import {mdx} from '@mdx-js/react'
+import PrismCodeBlock, {defaultProps, CustomLanguage, Language} from 'prism-react-renderer'
+import Prism from 'prismjs'
+import React, {ReactNode} from 'react'
+import {LiveEditor, LiveError, LivePreview, LiveProvider} from 'react-live'
 import styled from "@emotion/styled";
+import {isPrismLanguage} from '../plugin/prism'
 
 interface Props {
   className?: string,
@@ -10,21 +12,12 @@ interface Props {
   render?: boolean,
 }
 
-const isPrismLanguage: (str: string) => str is PrismLanguage =
-  (str): str is PrismLanguage => Object.keys(Prism.languages).includes(str)
-
-const getPrismLanguage: (className: string | undefined) => PrismLanguage | '' =
+const getPrismLanguage: (className: string) => CustomLanguage | '' =
   (className) => {
-    const defaultLanguage = ''
-
-    if (!className) {
-      return defaultLanguage
-    }
-
     const lang = className.replace(/language-/, '')
     if (!isPrismLanguage(lang)) {
       console.warn(`className ${className} is not supported language.`)
-      return defaultLanguage
+      return ''
     }
 
     return lang
@@ -34,8 +27,8 @@ const getCode: (node: ReactNode) => string =
   (node) => typeof node === 'string' ? node : node?.toString() ?? ''
 
 const CodeBlock: React.FC<Props> =
-  ({ children, className, live, render }) => {
-    const prismLanguage = getPrismLanguage(className)
+  ({children, className, live, render}) => {
+    const prismLanguage = getPrismLanguage(className || '')
     const code = getCode(children)
 
     if (live) {
@@ -44,12 +37,12 @@ const CodeBlock: React.FC<Props> =
           <LiveProvider
             code={code?.trim()}
             transformCode={_code => '/** @jsx mdx */' + _code}
-            scope={{ mdx }}
+            scope={{mdx}}
             theme={defaultProps.theme}
           >
-            <LivePreview />
-            <LiveEditor />
-            <LiveError />
+            <LivePreview/>
+            <LiveEditor/>
+            <LiveError/>
           </LiveProvider>
         </CodeDiv>
       )
@@ -62,7 +55,7 @@ const CodeBlock: React.FC<Props> =
             code={code}
             theme={defaultProps.theme}
           >
-            <LivePreview />
+            <LivePreview/>
           </LiveProvider>
         </CodeDiv>
       )
@@ -73,9 +66,9 @@ const CodeBlock: React.FC<Props> =
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={className} style={{ ...style, padding: '20px', overflow: 'auto' }}>
             {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
+              <div key={i} {...getLineProps({line, key: i})}>
                 {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
+                  <span key={key} {...getTokenProps({token, key})} />
                 ))}
               </div>
             ))}
