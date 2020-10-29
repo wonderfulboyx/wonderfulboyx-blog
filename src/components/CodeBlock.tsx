@@ -61,9 +61,17 @@ const CodeBlock: React.FC<Props> =
     }
 
     return (
-      <PrismCodeBlock theme={defaultProps.theme} Prism={defaultProps.Prism} code={code?.trim() ?? ''} language={prismLanguage as Language}>
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={{ ...style, padding: '20px', overflow: 'auto' }}>
+      <PrismCodeBlock
+        theme={defaultProps.theme}
+        Prism={defaultProps.Prism}
+        code={code?.trim() ?? ''}
+        language={prismLanguage as Language/*
+          CustomLanguage ∈ Language なのでこのキャストには問題があるが、Prismを拡張したLanguageに対応させているので動く
+            ref: '../plugin/prism'
+        */}
+      >
+        {({className, style, tokens, getLineProps, getTokenProps}) => (
+          <pre className={className} style={{...style, padding: '20px', overflow: 'auto'}}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({line, key: i})}>
                 {line.map((token, key) => (
