@@ -66,7 +66,7 @@ const CodeBlock: React.FC<Props> =
         Prism={defaultProps.Prism}
         code={code?.trim() ?? ''}
         language={prismLanguage as Language/*
-          CustomLanguage ∈ Language なのでこのキャストには問題があるが、Prismを拡張したLanguageに対応させているので動く
+          Language ∈ CustomLanguage なのでこのキャストには問題があるが、Prismを拡張したLanguageに対応させているので動く
             ref: '../plugin/prism'
         */}
       >
