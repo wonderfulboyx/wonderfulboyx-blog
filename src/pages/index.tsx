@@ -6,9 +6,8 @@ import Head from 'next/head'
 import React from "react"
 import Layout, { siteTitle } from '../components/Layout'
 import ArticleList from "../components/ArticleList";
-import * as ArticleRepository from "../lib/repository/ArticleRepository";
-import * as Article from "../model/Article";
-import {IArticle} from "../model/Article";
+import {ArticleRepository} from '../repository/ArticleRepository'
+import Article, {IArticle} from '../model/Article'
 
 interface Props {
   allArticlesSorted: IArticle[]
@@ -32,9 +31,11 @@ const Home: React.FC<Props> = ({ allArticlesSorted }) => {
 
 export default Home
 
+const articleRepository = new ArticleRepository()
+
 // ==== Next.js API ====
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const articles = await ArticleRepository.getAll()
+  const articles = await articleRepository.getAll()
   return {
     props: {
       allArticlesSorted: articles.sort(Article.compareDesc)

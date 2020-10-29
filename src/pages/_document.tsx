@@ -1,6 +1,6 @@
 import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
-import {existsGaId, GA_TRACKING_ID} from '../lib/gtag'
+import {existsGaId, GA_TRACKING_ID} from '../plugin/gtag'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
