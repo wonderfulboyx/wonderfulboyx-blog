@@ -9,14 +9,11 @@ const theme = {
     12, 14, 16, 20, 24, 32, 48, 64
   ],
   colors: {
-    text: '#566b78',
+    text: '#333',
     light: '#666',
     background: '#fff',
     primary: '#222',
     blockBg: '#ddd',
-    headerBg: '#222',
-    headerText: '#fff',
-    hoverBlock: '#eee',
     border: '#e1e4e8',
     modes: {
       dark: {
@@ -44,8 +41,9 @@ const theme = {
     },
     h2: {
       fontSize: [4],
-      color: 'primary',
-      marginTop: 4
+      // color: 'primary',
+      marginTop: 4,
+      color: '#ff0'
     },
     h3: {
       fontSize: [3],
@@ -81,30 +79,10 @@ const theme = {
       fontStyle: 'italic',
       backgroundColor: 'blockBg'
     },
-    h4: {
-      color: 'text',
-      fontFamily: 'heading',
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      fontSize: 2
-    },
-    h5: {
-      color: 'text',
-      fontFamily: 'heading',
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      fontSize: 1
-    },
-    h6: {
-      color: 'text',
-      fontFamily: 'heading',
-      lineHeight: 'heading',
-      fontWeight: 'heading',
-      fontSize: 0
-    },
     code: {
       fontFamily: 'monospace',
-      fontSize: 'inherit'
+      fontSize: 'inherit',
+      background: '#000'
     },
     table: {
       width: '100%',
@@ -121,6 +99,9 @@ const theme = {
     },
     img: {
       maxWidth: '100%'
+    },
+    inlineCode: {
+      background: '#000'
     }
   },
   sizes: {

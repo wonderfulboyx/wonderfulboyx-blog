@@ -1,63 +1,72 @@
 /** @jsx jsx */
 import {jsx} from "theme-ui";
 import React from "react";
-import theme from "../theme";
-import {Property} from "csstype";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import ThemeSwitch from "./ThemeSwitch";
+import CircleImg from "./CircleImg";
 
+interface Props {
+  className?: string
+}
 
-const Navbar: React.FC = () => {
+const Component: React.FC<Props> = (props) => {
   return (
-    <nav css={`
-        background: ${theme.colors.headerBg};
-        display: flex;
-        align-items: center;
-        padding: .5rem;
-      `}>
-      <Link href={'/'}>
-        <a>
-          <CircleIcon size={'2rem'}/>
-        </a>
-      </Link>
-      <MenuList>
-        <li>
-          <Link href={'/'}>
-            <MenuItemLink>articles</MenuItemLink>
-          </Link>
-        </li>
-      </MenuList>
-      <div css={`
-        margin-left: auto;
-        margin-right: 16px;
-      `}>
-        <ThemeSwitch/>
-      </div>
-    </nav>
+    <div className={props.className}>
+      <nav className='nav-bar'>
+        <Link href={'/'}>
+          <a>
+            <CircleImg size={'20px'} src={'/favicon.ico'}/>
+          </a>
+        </Link>
+        <ul className='menu-list'>
+          <li>
+            <Link href={'/'}>
+              <a className='menu-item-link'>articles</a>
+            </Link>
+          </li>
+        </ul>
+        <div className='theme-switch-wrapper'>
+          <ThemeSwitch/>
+        </div>
+      </nav>
+    </div>
   )
 }
 
-const CircleIcon: React.FC<{ size: Property.Height }> = ({size}) => (
-  <img css={`
-    height: ${size};
-    width: ${size};
-  `} src="/favicon.ico" alt=""/>
-)
+const StyledComponent = styled(Component)`
+& .nav-bar {
+  background: #222;
+  display: flex;
+  align-items: center;
+  padding: .5rem;
+}
 
-const MenuList = styled.ul`
+& .menu-list {
   display: flex;
   li      { margin-left: 1rem; }
   li + li { margin-left: .5rem; }
-`
+}
 
-const MenuItemLink = styled.a`
-  color: ${theme.colors.headerText};
+& .menu-item-link {
+  color: #fff;
   text-decoration: underline;
   cursor: pointer;
   :hover {
     text-decoration: none;
   }
+}
+
+& .theme-switch-wrapper {
+  margin-left: auto;
+  margin-right: 16px;
+}
 `
+
+const ContainerComponent: React.FC = ({children}) => {
+  return <StyledComponent>{children}</StyledComponent>
+}
+
+const Navbar = ContainerComponent
 
 export default Navbar
