@@ -2,8 +2,10 @@ import {mdx} from '@mdx-js/react'
 import PrismCodeBlock, {defaultProps, CustomLanguage, Language} from 'prism-react-renderer'
 import React, {ReactNode} from 'react'
 import {LiveEditor, LiveError, LivePreview, LiveProvider} from 'react-live'
-import styled from "@emotion/styled";
 import {isCustomLanguage} from '../plugin/prism'
+import styled from "@emotion/styled";
+import theme from "../theme";
+import {Styled} from 'theme-ui'
 
 interface Props {
   className?: string,
@@ -27,7 +29,7 @@ const getCode: (node: ReactNode) => string =
 
 const CodeBlock: React.FC<Props> =
   ({children, className, live, render}) => {
-    const prismLanguage =  className ? getCustomLanguageFromClassName(className) : ''
+    const prismLanguage = className ? getCustomLanguageFromClassName(className) : ''
     const code = getCode(children)
 
     if (live) {
@@ -71,7 +73,7 @@ const CodeBlock: React.FC<Props> =
         */}
       >
         {({className, style, tokens, getLineProps, getTokenProps}) => (
-          <pre className={className} style={{...style, padding: '20px', overflow: 'auto'}}>
+          <Styled.pre className={className} style={{...style, padding: '20px', overflow: 'auto'}}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({line, key: i})}>
                 {line.map((token, key) => (
@@ -79,18 +81,25 @@ const CodeBlock: React.FC<Props> =
                 ))}
               </div>
             ))}
-          </pre>
+          </Styled.pre>
         )}
       </PrismCodeBlock>
     )
   }
 
 const CodeDiv = styled.div`
-  background-color: ${defaultProps.theme.plain.backgroundColor};
-  color: ${defaultProps.theme.plain.color};
-  font-style: ${defaultProps.theme.plain.fontStyle};
-  font-weight: ${defaultProps.theme.plain.fontWeight};
-  margin-top: 40px;
+& pre {
+  font-family: ${theme.fonts.monospace};
+  overflow-x: auto;
+  & code {
+    color: inherit;
+  }
+}
+
+& code {
+  font-family: ${theme.fonts.monospace};
+  font-size: inherit;
+}
 `
 
 export default CodeBlock

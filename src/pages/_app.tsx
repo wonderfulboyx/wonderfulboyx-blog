@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import React, {useEffect} from "react";
 import { ThemeProvider } from 'theme-ui';
 import theme from '../theme';
-import '../styles/destyle.css'
+import '../styles/main.css'
 import {Router} from "next/router";
 import * as gatag from '../plugin/gtag'
 import {NextRouterHandler} from '../types/NextRouterHandler'
