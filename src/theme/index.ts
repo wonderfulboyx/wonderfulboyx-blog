@@ -1,14 +1,21 @@
+import presetBase from './preset-base'
+
 const theme = {
+  ...presetBase,
   useLocalStorage: false,
   initialColorModeName: 'light',
   useColorSchemeMediaQuery: true,
-  space: [
-    0, 4, 8, 16, 32, 64, 128, 256, 512
-  ],
   fontSizes: [
     12, 14, 16, 22, 29, 40, 48, 64
   ],
+  fonts: {
+    ...presetBase.fonts,
+    body:
+      '"Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    heading: 'inherit',
+  },
   colors: {
+    ...presetBase.colors,
     text: '#333',
     light: '#666',
     background: '#fff',
@@ -24,12 +31,8 @@ const theme = {
       },
     },
   },
-  fonts: {
-    body:
-      '"Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    heading: 'inherit',
-  },
   styles: {
+    ...presetBase.styles,
     root: {
       fontFamily: 'body',
       color: 'text',
@@ -60,63 +63,6 @@ const theme = {
         color: 'primary',
         textDecoration: 'none',
       },
-    },
-    p: {
-      lineHeight: '1.5em',
-    },
-    pre: {
-      fontSize: 2,
-      fontFamily: 'monospace',
-      code: {
-        color: 'inherit'
-      }
-    },
-    blockquote: {
-      padding: 3,
-      color: 'primary',
-      margin: '.5rem 0',
-      fontStyle: 'italic',
-      backgroundColor: 'blockBg'
-    },
-    code: {
-      fontFamily: 'monospace',
-      fontSize: 'inherit',
-    },
-    table: {
-      width: '100%',
-      borderCollapse: 'separate',
-      borderSpacing: 0
-    },
-    th: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid'
-    },
-    td: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid'
-    },
-    img: {
-      maxWidth: '100%'
-    },
-    inlineCode: {
-    }
-  },
-  sizes: {
-    container: '50rem'
-  },
-  text: {
-    default: {
-      color: 'text',
-      fontSize: 3,
-    },
-    caps: {
-      textTransform: 'uppercase',
-      letterSpacing: '0.2em',
-    },
-    heading: {
-      fontFamily: 'heading',
-      fontWeight: 'heading',
-      lineHeight: 'heading',
     },
   }
 }
