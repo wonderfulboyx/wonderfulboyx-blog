@@ -6,7 +6,7 @@ const theme = {
     0, 4, 8, 16, 32, 64, 128, 256, 512
   ],
   fontSizes: [
-    12, 14, 16, 20, 24, 32, 48, 64
+    12, 14, 16, 22, 29, 40, 48, 64
   ],
   colors: {
     text: '#333',
@@ -26,7 +26,7 @@ const theme = {
   },
   fonts: {
     body:
-      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+      '"Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     heading: 'inherit',
   },
   styles: {
@@ -37,18 +37,20 @@ const theme = {
     },
     h1: {
       fontSize: [5],
-      color: 'primary',
+      color: 'text',
+      lineHeight: '1.5em',
     },
     h2: {
       fontSize: [4],
-      // color: 'primary',
+      color: 'text',
       marginTop: 4,
-      color: '#ff0'
+      lineHeight: '1.5em',
     },
     h3: {
       fontSize: [3],
-      color: 'primary',
-      marginTop: 3
+      color: 'text',
+      marginTop: 3,
+      lineHeight: '1.5em',
     },
     a: {
       color: 'primary',
@@ -60,10 +62,7 @@ const theme = {
       },
     },
     p: {
-      lineHeight: 1.5,
-      fontFamily: 'body',
-      fontWeight: 'body',
-      padding: '.5rem 0',
+      lineHeight: '1.5em',
     },
     pre: {
       fontSize: 2,
@@ -82,7 +81,6 @@ const theme = {
     code: {
       fontFamily: 'monospace',
       fontSize: 'inherit',
-      background: '#000'
     },
     table: {
       width: '100%',
@@ -101,7 +99,6 @@ const theme = {
       maxWidth: '100%'
     },
     inlineCode: {
-      background: '#000'
     }
   },
   sizes: {
